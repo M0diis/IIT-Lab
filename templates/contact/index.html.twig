@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modestas K. | Kontaktai{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <section class="mb-4">
+            <h2 class="h1-responsive font-weight-bold text-center my-4">CONTACT ME</h2>
+
+            <p class="text-center w-responsive mx-auto mb-3">Do you have any questions? I am a freelancer for your various projects. I work with both front-end and back-end parts.</p>
+            <p class="text-center w-responsive mx-auto">Write me a letter or get in touch with the given contacts!</p>
+
+            <div class="row">
+
+                <div class="col-md-9 mb-md-0 mb-5">
+                    <form id="contact-form" name="contact-form" action="{{ path("contact_post") }}" method="POST">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="name" class="">Your name</label>
+                                    <input type="text" id="name" name="name" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="email" class="">Email</label>
+                                    <input type="text" id="email" name="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="md-form mb-0">
+                                    <label for="subject" class="">Subject</label>
+                                    <input type="text" id="subject" name="subject" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="md-form">
+                                    <label for="message">Message</label>
+                                    <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <br>
+                    <div class="text-center text-md-left">
+                        <a class="btn btn-sm btn-success" onclick="document.getElementById('contact-form').submit();">Send</a>
+                    </div>
+                    <div class="status"></div>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <ul class="list-unstyled mb-0">
+                        <ul class="contact-info">
+                            <li><i class="fa fa-phone"><a href="tel:+37063660905">+37063660905</a></i></li>
+                            <li><i class="fa fa-envelope"><a href="mailto:modestaskazlauskas1@gmail.com" target="_blank">modestaskazlauskas1@gmail.com</a></i></li>
+                            <li><i class="fa fa-linkedin"><a href="https://www.linkedin.com/in/modestas-kaz/" target="_blank">modestas-kaz</a></i></li>
+                            <li><i class="fa fa-github"><a href="https://github.com/M0diis" target="_blank">M0diis</a></i></li>
+                        </ul>
+                    </ul>
+                </div>
+
+
+            </div>
+
+        </section>
+    </div>
+{% endblock %}
+

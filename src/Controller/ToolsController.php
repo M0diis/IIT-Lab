@@ -20,7 +20,7 @@ class ToolsController extends AbstractController
     public function index(): Response
     {
         return $this->render('tools/index.html.twig', [
-            'controller_name' => 'ToolsController',
+            'logged_in' => $this->requestStack->getSession()->get('logged_in')
         ]);
     }
 }

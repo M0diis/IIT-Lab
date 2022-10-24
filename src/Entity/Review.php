@@ -2,27 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
+use App\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MessageRepository::class)]
-#[ORM\Table(name: 'messages')]
-class Message
+#[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\Table(name: 'reviews')]
+class Review
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $content = null;
+    #[ORM\Column(length: 255)]
+    private ?string $data = null;
 
     #[ORM\Column(type: Types::BIGINT)]
     private ?string $created_timestamp = null;
 
-    #[ORM\Column(name: 'fk_userId', type: Types::BIGINT)]
-    private ?string $fk_userId = null;
+    #[ORM\Column(name: 'fk_userId')]
+    private ?int $fk_userId = null;
 
     private ?User $user = null;
 
@@ -31,14 +31,14 @@ class Message
         return $this->id;
     }
 
-    public function getContent(): ?string
+    public function getData(): ?string
     {
-        return $this->content;
+        return $this->data;
     }
 
-    public function setContent(?string $content): self
+    public function setData(string $data): self
     {
-        $this->content = $content;
+        $this->data = $data;
 
         return $this;
     }
@@ -55,12 +55,12 @@ class Message
         return $this;
     }
 
-    public function getFkUserId(): ?string
+    public function getFkUserId(): ?int
     {
         return $this->fk_userId;
     }
 
-    public function setFkUserId(string $fk_userId): self
+    public function setFkUserId(int $fk_userId): self
     {
         $this->fk_userId = $fk_userId;
 
@@ -72,7 +72,7 @@ class Message
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

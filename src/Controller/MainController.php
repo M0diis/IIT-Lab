@@ -61,6 +61,9 @@ class MainController extends AbstractController
         }
 
         $this->requestStack->getSession()->set('logged_in', true);
+        $this->requestStack->getSession()->set('user_id', $user->getId());
+        $this->requestStack->getSession()->set('user_object', $user);
+        $this->requestStack->getSession()->set('admin', $user->isAdmin());
 
         $this->addFlash("info", "Logged in successfully.");
 
@@ -72,7 +75,6 @@ class MainController extends AbstractController
     {
         return $this->render('main/registration.html.twig');
     }
-
 
     #[Route('/register', name: 'register_post', methods: ['POST'])]
     public function registerPost(Request $request, ManagerRegistry $doctrine): Response
@@ -119,6 +121,9 @@ class MainController extends AbstractController
         $this->addFlash("info", "User registered successfully.");
 
         $this->requestStack->getSession()->set('logged_in', true);
+        $this->requestStack->getSession()->set('user_id', $user->getId());
+        $this->requestStack->getSession()->set('user_object', $user);
+        $this->requestStack->getSession()->set('admin', $user->isAdmin());
 
         return $this->redirectToRoute('home');
     }
@@ -128,6 +133,9 @@ class MainController extends AbstractController
     public function logout(): Response
     {
         $this->requestStack->getSession()->set('logged_in', false);
+        $this->requestStack->getSession()->remove('user_id');
+        $this->requestStack->getSession()->remove('user_object');
+        $this->requestStack->getSession()->remove('admin');
 
         $this->addFlash("info", "Logged out successfully.");
 

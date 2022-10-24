@@ -27,7 +27,7 @@ class Ticket
     #[ORM\Column(type: Types::BIGINT)]
     private ?string $created_timestamp = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\Column(name: 'fk_userId', type: Types::BIGINT)]
     private ?string $fk_userId = null;
 
     public function getId(): ?int
@@ -62,6 +62,11 @@ class Ticket
     public function isClosed(): ?bool
     {
         return $this->closed;
+    }
+
+    public function isClosedString(): ?string
+    {
+        return $this->closed ? 'Closed' : 'Open';
     }
 
     public function setClosed(bool $closed): self

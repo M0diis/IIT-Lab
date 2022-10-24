@@ -5,7 +5,11 @@
         <title>{% block title %}Portfolio{% endblock %}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji|Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="assets/styles/app.css">
 
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
@@ -56,11 +60,16 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ path('tools') }}">TOOLS</a>
                             </li>
-{#                            <li class="nav-item active">#}
-{#                                <a class="nav-link" href="{{ path('login') }}">Prisijungti</a>#}
-{#                            </li>#}
+
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ path('reviews') }}">REVIEWS</a>
+                            </li>
 
                             {% if logged_in is defined and logged_in is same as(true) %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('tickets') }}">TICKETS</a>
+                                </li>
+
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{ path('logout') }}">LOGOUT</a>
                                 </li>
@@ -77,6 +86,36 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+
+        {% for message in app.flashes('info') %}
+            <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
+                <div class="toast fade" id="toast">
+                    <div class="toast-header">
+                        <strong class="me-auto"><i class="bi-gift-fill"></i>Information</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
+                <div class="toast fade" id="toast">
+                    <div class="toast-header">
+                        <strong class="me-auto"><i class="bi-gift-fill"></i>Error</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </body>
 
     <footer>

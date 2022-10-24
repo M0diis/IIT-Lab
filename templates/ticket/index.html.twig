@@ -1,20 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TicketController!{% endblock %}
+{% block title %}Modestas K. | Tickets{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<br>
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8 col-xl-8">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="h1-responsive font-weight-bold my-4">CREATE A TICKET</h2>
+                <p>
+                    Create a ticket where we can discuss your project.
+                </p>
+                <p>
+                    I will get back to you as soon as possible.
+                </p>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                <form class="px-md-2" method="post">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'F:/Coding/PhpStorm/LD2/src/Controller/TicketController.php'|file_link(0) }}">src/Controller/TicketController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'F:/Coding/PhpStorm/LD2/templates/ticket/registration.html.twig'|file_link(0) }}">templates/ticket/index.html.twig</a></code></li>
-    </ul>
+                    <div class="form-outline mb-4">
+                        <input type="text" id="ticket_title" name="ticket_title" class="form-control" />
+                        <label class="form-label" for="ticket_title">Subject</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="ticket_description" name="ticket_description" class="form-control md-textarea" />
+                        <label class="form-label" for="ticket_description">Description</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-sm btn-success btn-lg mb-1">Submit</button>
+                </form>
+
+                <p class="text-muted text-center mb-0 px-md-2 small">You can find your tickets below.</p>
+                <p class="text-muted text-center mb-0 px-md-2 small">To view more information, click on the ticket.</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="list-group" id="myList">
+                {% for ticket in tickets %}
+                    <a class="list-group-item list-group-item-action flex-column align-items-start" href="/tickets/view/{{ ticket.id }}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ ticket.title }}</h5>
+                            <small>{{ ticket.createdTimestamp }}</small>
+                        </div>
+                        <p class="mb-1">{{ ticket.description }}</p>
+                        <small>{{ ticket.closedString }}</small>
+                    </a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modestas K. | Reviews{% endblock %}
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-10">
+        {% if logged_in is defined and logged_in is same as(true) %}
+            <h2 class="h1-responsive font-weight-bold my-4">LEAVE A REVIEW</h2>
+            <p>
+                Since you're logged in, you can leave a review for any of the services I provide. Please be as descriptive as possible.
+            </p>
+
+            <form class="px-md-2" method="post" action="{{ path("review_post") }}">
+
+                <div class="form-outline mb-4">
+                    <input type="text" id="review" name="review" class="form-control md-textarea" />
+                    <label class="form-label" for="review">Your review</label>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-success btn-lg mb-1">Submit</button>
+            </form>
+
+            <p class="text-muted text-center mb-0 px-md-2 small">Other reviews are shown below.</p>
+
+            <br>
+        {% endif %}
+
+        {% for review in reviews %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <img src="https://image.ibb.co/jw55Ex/def_face.jpg" style="width: 80%" class="img img-rounded img-fluid" alt="Profile picture"/>
+                            <p class="text-muted text-center mb-0 px-md-2 small">{{ review.createdTimestamp }}</p>
+                        </div>
+                        <div class="col-md-10">
+                            <p>
+                                <p class="float-left"><strong>{{ review.user.name }}</strong></p>
+                            </p>
+                            <div class="clearfix"></div>
+                            <p>{{ review.data }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -4,16 +4,24 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
+    private RequestStack $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     #[Route('/contact', name: 'contact')]
     public function index(): Response
     {
         return $this->render('contact/index.html.twig', [
-            'controller_name' => 'ContactController',
+            'logged_in' => $this->requestStack->getSession()->get('logged_in')
         ]);
     }
 
@@ -26,7 +34,7 @@ class ContactController extends AbstractController
         $message = $request->request->get('message');
 
         return $this->render('contact/index.html.twig', [
-            'controller_name' => 'ContactController',
+            'logged_in' => $this->requestStack->getSession()->get('logged_in')
         ]);
     }
 }

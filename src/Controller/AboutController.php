@@ -20,7 +20,7 @@ class AboutController extends AbstractController
     public function index(): Response
     {
         return $this->render('about/index.html.twig', [
-            'controller_name' => 'AboutController',
+            'logged_in' => $this->requestStack->getSession()->get('logged_in')
         ]);
     }
 }

@@ -3,32 +3,18 @@
 {% block title %}Modestas K. | Home{% endblock %}
 
 {% block body %}
-    <br>
+<br>
 
-    <div style="height: 80%;" class="d-flex container justify-content-center align-items-center">
-        <br>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Hi!</h5>
-                <p class="card-text">Welcome to my portfolio page. Here you will be able to find out a little about me and what tools and software I use.</p>
-                <p class="card-text">You can also communicate with me by registering and opening a support ticket, where we can discuss in more detail!</p>
-                <p class="card-text"><small class="text-muted"></small></p>
-            </div>
+<div style="height: 80%;" class="d-flex container justify-content-center align-items-center">
+    <br>
+    <div>
+        <div class="card-body">
+            <h1 class="card-title mb-1"><em>Hi!</em></h1>
+            <em><p class="card-text">Welcome to my portfolio page. Here you will be able to find out a little about me and what tools and software I use.</p>
+            <p class="card-text">You can also communicate with me by registering and opening a support ticket, where we can discuss in more detail!</p>
+            </em>
+            <p class="card-text"><small class="text-muted"></small></p>
         </div>
     </div>
-
-    {% for message in app.flashes('info') %}
-        <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
-            <div class="toast fade" id="toast">
-            <div class="toast-header">
-                <strong class="me-auto"><i class="bi-gift-fill"></i>Information</strong>
-                <small>Just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">
-                {{ message }}
-            </div>
-            </div>
-        </div>
-    {% endfor %}
+</div>
 {% endblock %}

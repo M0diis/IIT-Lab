@@ -30,6 +30,8 @@ class Ticket
     #[ORM\Column(name: 'fk_userId', type: Types::BIGINT)]
     private ?string $fk_userId = null;
 
+    private ?User $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +98,18 @@ class Ticket
     public function setFkUserId(string $fk_userId): self
     {
         $this->fk_userId = $fk_userId;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

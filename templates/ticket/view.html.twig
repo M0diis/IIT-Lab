@@ -28,6 +28,11 @@
                     <input type="hidden" id="ticket_id" name="ticket_id" value="{{ ticket.id }}" />
 
                     <button type="submit" class="btn btn-sm btn-success btn-lg mb-1">Send</button>
+                </form>
+
+                <form class="px-md-2" method="post" action="{{ path("ticket_close", {"id": ticket.id }) }}">
+
+                    <input type="hidden" id="ticket_id" name="ticket_id" value="{{ ticket.id }}" />
                     <button type="submit" class="btn btn-sm btn-danger btn-lg mb-1">Close</button>
                 </form>
 
@@ -39,12 +44,22 @@
         <div class="col-md-8">
             <div class="list-group">
                 {% for message in messages %}
-                    <a class="list-group-item list-group-item-action flex-column align-items-start"">
+                    <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{{ message.user.name }}</h5>
                         </div>
                         <p class="mb-1">{{ message.content }}</p>
                         <small>{{ message.createdTimestamp }}</small>
+
+                        {% if logged_in is defined and logged_in is same as(true) and admin is defined and admin is same as(true) %}
+                        <form method="post" action="{{ path("ticket_message_delete", {"id": message.id}) }}">
+                            <input type="hidden" id="ticket_id" name="ticket_id" value="{{ ticket.id }}" />
+
+                            <div class="d-grid d-md-flex justify-content-md-end">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </div>
+                        </form>
+                        {% endif %}
                     </a>
                     <br>
                 {% endfor %}

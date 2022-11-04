@@ -1,0 +1,147 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modestas K. | Admin{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#topic_search').on('input', (e) =>
+        {
+            const filterable = $('.filterable');
+
+            const value = e.target.value.toLowerCase();
+
+            for(let i = 0; i < filterable.length; i++)
+            {
+                const el = filterable[i];
+
+                const id = el.id.split('|')[0].toLowerCase();
+
+                if(value !== '') {
+                    if(id.includes(value)) {
+                        el.style.display = '';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                } else {
+                    el.style.display = '';
+                }
+            }
+        });
+
+        $('#user_search').on('input', (e) =>
+        {
+            const filterable = $('.filterable');
+
+            const value = e.target.value.toLowerCase();
+
+            for(let i = 0; i < filterable.length; i++)
+            {
+                const el = filterable[i];
+
+                const id = el.id.split('|')[1].toLowerCase();
+
+                el.style.display = '';
+
+                if(value !== '') {
+                    id.includes(value) ? el.style.display = '' : el.style.display = 'none';
+                }
+            }
+        });
+
+        $('#open-check').on('change', (e) =>
+        {
+            const filterable = $('.filterable');
+
+            const value = e.target.checked;
+
+            for(let i = 0; i < filterable.length; i++)
+            {
+                const el = filterable[i];
+
+                const closed = el.getAttribute('closed');
+
+                el.style.display = '';
+
+                if(value) {
+                    closed ? el.style.display = 'none' : el.style.display = '';
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+
+            <div class="col-lg-8 col-xl-8">
+                <div class="collapse" id="create-collapse">
+                    <div class="card-body p-4 p-md-5">
+                        <br>
+                        <input type="text" id="topic_search" name="topic_search" class="form-control" />
+                        <label class="form-label" for="topic_search">Search by ticket subject</label>
+
+                        <input type="text" id="user_search" name="user_search" class="form-control" />
+                        <label class="form-label" for="user_search">Search by ticket author</label>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="open-check">
+                            <label class="form-check-label" for="open-check">
+                                Show only open
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-1 col-xl-1 justify-content-center align-items-center h-100">
+                    <button style="width: 100px" class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-controls="create-collapse">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-1 p-md-1">
+
+            </div>
+
+            <div class="col-md-8">
+                <div class="list-group">
+                    {% for ticket in tickets %}
+                        <div id="{{ ticket.title }} | {{ ticket.user.name }}" closed="{{ ticket.closed }}" class="filterable">
+                            <div class="card card-header" data-bs-toggle="collapse" data-bs-target="#ticket-collapse-{{ ticket.id }}" aria-controls="ticket-collapse-{{ ticket.id }}">
+                                {{ ticket.user.name }}
+                            </div>
+                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="/tickets/view/{{ ticket.id }}">
+                            <div class="collapse show" id="ticket-collapse-{{ ticket.id }}">
+                                <div class="card-body">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ ticket.title }}</h5>
+                                    <small>{{ ticket.createdTimestamp }}</small>
+                                </div>
+                                <br>
+                                <p class="mb-1">{{ ticket.description }}</p>
+                                <small>{{ ticket.closedString }}</small>
+
+                                <form method="post" action="{{ path("ticket_delete", {"id": ticket.id}) }}">
+                                    <input type="hidden" id="ticket_id" name="ticket_id" value="{{ ticket.id }}" />
+                                    <div class="d-grid d-md-flex justify-content-md-end">
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                    </div>
+                                </form>
+                        </div>
+                        </div>
+                        </a>
+                        </div>
+
+                        <div class="mb-3"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

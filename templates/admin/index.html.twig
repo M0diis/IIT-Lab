@@ -1,0 +1,100 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modestas K. | Admin{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+    $('#is_admin').on('change', (e) =>
+    {
+        const value = e.target.checked;
+
+        if(value) {
+            $('#is_admin').val(true);
+        } else {
+            $('#is_admin').val(false);
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<br>
+<div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div style="width: 30rem;">
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item">
+                    <button style="width: 150px" class="btn btn-sm btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#post-collapse" aria-controls="post-collapse">
+                        Create a new post
+                    </button>
+                </li>
+                <li class="list-group-item">
+                    <button style="width: 150px" class="btn btn-sm btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#user-collapse" aria-controls="user-collapse">
+                        Create a new user
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-lg-8 col-xl-8">
+            <div class="collapse" id="post-collapse">
+                <div class="card-body p-4 p-md-5">
+                    <br>
+                    <form method="post" action="{{ path("post_create") }}">
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="post_title" name="post_title" class="form-control" />
+                            <label class="form-label" for="post_title">Title</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="post_content" name="post_content" class="form-control" />
+                            <label class="form-label" for="post_content">Content</label>
+                        </div>
+
+                        <button style="width: 150px" class="btn btn-sm btn-success" type="submit" >Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-xl-8">
+            <div class="collapse" id="user-collapse">
+                <div class="card-body p-4 p-md-5">
+                    <br>
+                    <form method="post" action="{{ path("user_create") }}">
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="user_name" name="user_name" class="form-control" />
+                            <label class="form-label" for="user_name">Name</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="email" id="user_email" name="user_email" class="form-control" />
+                            <label class="form-label" for="user_email">Email</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="password" id="user_password" name="user_password" class="form-control" />
+                            <label class="form-label" for="user_password">Password</label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label" for="is_admin">Admin</label>
+                            <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin">
+                        </div>
+
+                        <br>
+
+                        <button style="width: 150px" class="btn btn-sm btn-success" type="submit" >Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

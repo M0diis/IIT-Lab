@@ -25,17 +25,20 @@ class ReviewController extends AbstractController
     {
         return $this->render('review/index.html.twig', [
             'logged_in' => $this->requestStack->getSession()->get('logged_in'),
+            'admin' => $this->requestStack->getSession()->get('admin'),
             'reviews' => $this->getReviewsByUser($doctrine)
         ]);
     }
 
-    private function getReviewsByUser($doctrine)
+    private function getReviewsByUser($doctrine): array
     {
         $reviewRepository = $doctrine->getRepository(Review::class);
 
         $userRepository = $doctrine->getRepository(User::class);
 
-        $reviews = $reviewRepository->findAll();
+        $reviews = $reviewRepository->findBy([], [
+            'created_timestamp' => 'DESC'
+        ]);
 
         $reviewsWithUser = [];
 
@@ -55,13 +58,42 @@ class ReviewController extends AbstractController
     {
         $review = new Review();
 
-        $review->setFkUserId($this->requestStack->getSession()->get('user_id'))
-            ->setData($request->get('review'))
+        $message = $request->get('review');
+
+        if(empty($message)) {
+            $this->addFlash('error', "The review should not be empty.");
+
+            return $this->redirectToRoute('reviews');
+        }
+
+        $review
+            ->setFkUserId($this->requestStack->getSession()->get('user_id'))
+            ->setData($message)
             ->setCreatedTimestamp(date('Y-m-d H:i:s'));
 
         $entityManager = $doctrine->getManager();
 
         $entityManager->persist($review);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('reviews');
+    }
+
+    #[Route('/review/delete/{id}', name: 'review_delete', methods: ['POST'])]
+    public function reviewDelete($id, ManagerRegistry $doctrine): Response
+    {
+        if(!$this->requestStack->getSession()->get('admin')) {
+            return $this->redirectToRoute('reviews');
+        }
+
+        $reviewRepository = $doctrine->getRepository(Review::class);
+
+        $review = $reviewRepository->find($id);
+
+        $entityManager = $doctrine->getManager();
+
+        $entityManager->remove($review);
 
         $entityManager->flush();
 

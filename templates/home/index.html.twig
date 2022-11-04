@@ -4,16 +4,45 @@
 
 {% block body %}
 <br>
-
-<div style="height: 80%;" class="d-flex container justify-content-center align-items-center">
+<div class="container">
     <br>
-    <div>
-        <div class="card-body">
-            <h1 class="card-title mb-1"><em>Hi!</em></h1>
-            <em><p class="card-text">Welcome to my portfolio page. Here you will be able to find out a little about me and what tools and software I use.</p>
-            <p class="card-text">You can also communicate with me by registering and opening a support ticket, where we can discuss in more detail!</p>
-            </em>
-            <p class="card-text"><small class="text-muted"></small></p>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+
+        <div class="col-lg-8 col-xl-8 text-center">
+            <div class="card-body">
+                <h1 class="card-title mb-1">Hi!</h1>
+                <p class="card-text"><em>Welcome to my portfolio page. Here you will be able to find out a little about me and what tools and software I use.</em></p>
+                <p class="card-text"><em>You can also communicate with me by registering and opening a support ticket, where we can discuss in more detail!</em></p>
+            </div>
+
+            <p class="card-text"><small class="text-muted">You can find some latest posts down below</small></p>
+        </div>
+
+        <div class="p-5 p-md-5"></div>
+
+        <div class="col-lg-8 col-xl-8">
+        {% for post in posts %}
+            <div class="mb-2">
+                <hr>
+                <div class="card-body p-2 p-sm-3">
+                    <div class="media forum-item">
+                        <a><img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                        <div class="media-body">
+                            <h6><p>{{ post.user.name }}</h6>
+                            <p class="text-secondary">
+                                {{ post.content }}
+                            </p>
+                            <p class="text-muted">{{ post.createdTimestamp }}</p>
+                            {% if admin is defined and admin is same as(true) %}
+                                <form method="post" action="{{ path('post_delete', {'id': post.id}) }}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         </div>
     </div>
 </div>

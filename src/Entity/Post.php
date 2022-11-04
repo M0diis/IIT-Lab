@@ -24,8 +24,10 @@ class Post
     #[ORM\Column(type: Types::BIGINT)]
     private ?string $created_timestamp = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\Column(name: 'fk_userId', type: Types::BIGINT)]
     private ?string $fk_userId = null;
+
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -76,6 +78,18 @@ class Post
     public function setFkUserId(string $fk_userId): self
     {
         $this->fk_userId = $fk_userId;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

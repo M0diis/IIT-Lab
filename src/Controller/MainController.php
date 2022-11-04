@@ -31,7 +31,7 @@ class MainController extends AbstractController
     #[Route('/login', name: 'login', methods: ['GET', 'HEAD'])]
     public function login(): Response
     {
-        if($this->requestStack->getSession()->get('logged_in')) {
+        if ($this->requestStack->getSession()->get('logged_in')) {
             return $this->redirectToRoute('home');
         }
 
@@ -41,7 +41,7 @@ class MainController extends AbstractController
     #[Route('/login', name: 'login_post', methods: ['POST'])]
     public function loginPost(Request $request, ManagerRegistry $doctrine): Response
     {
-        if($this->requestStack->getSession()->get('logged_in')) {
+        if ($this->requestStack->getSession()->get('logged_in')) {
             return $this->redirectToRoute('home');
         }
 
@@ -54,7 +54,7 @@ class MainController extends AbstractController
             ['name' => $username, 'password' => $password]
         );
 
-        if(is_null($user)) {
+        if (is_null($user)) {
             $this->addFlash("error", "User not registered.");
 
             return $this->redirectToRoute('login');
@@ -89,7 +89,7 @@ class MainController extends AbstractController
             ['name' => $username]
         );
 
-        if(!is_null($user)) {
+        if (!is_null($user)) {
             $this->addFlash("error", "User by the specified name already exists.");
 
             return $this->redirectToRoute('register');
@@ -99,7 +99,7 @@ class MainController extends AbstractController
             ['email' => $email]
         );
 
-        if(!is_null($user)) {
+        if (!is_null($user)) {
             $this->addFlash("error", "User by the specified email already exists.");
 
             return $this->redirectToRoute('register');
@@ -113,7 +113,6 @@ class MainController extends AbstractController
         $user->setPassword($password);
         $user->setEmail($email);
         $user->setAdmin(false);
-        $user->setCreatedTimestamp(time());
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -140,5 +139,12 @@ class MainController extends AbstractController
         $this->addFlash("info", "Logged out successfully.");
 
         return $this->redirectToRoute('home');
+    }
+
+
+    #[Route('/test', name: 'test')]
+    public function test(): Response
+    {
+        return $this->render('react.html.twig');
     }
 }

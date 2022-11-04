@@ -39,6 +39,15 @@ class TicketMessageRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByMessageId($messageId)
+    {
+        return $this->createQueryBuilder('tm')
+            ->andWhere('tm.fk_messageId = :messageId')
+            ->setParameter('messageId', $messageId)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return TicketMessage[] Returns an array of TicketMessage objects
 //     */

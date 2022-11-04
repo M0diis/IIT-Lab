@@ -2,6 +2,36 @@
 
 {% block title %}Modestas K. | Tickets{% endblock %}
 
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+    $('#topic_search').on('input', (e) =>
+    {
+        const filterable = $('.filterable');
+
+        const value = e.target.value;
+
+        for(let i = 0; i < filterable.length; i++)
+        {
+            const el = filterable[i];
+
+            const id = el.id.toLowerCase();
+
+            if(value !== '') {
+                if(id.includes(value)) {
+                    el.style.display = '';
+                } else {
+                    el.style.display = 'none';
+                }
+            } else {
+                el.style.display = '';
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
 {% block body %}
 <br>
 <div class="container">
@@ -16,7 +46,7 @@
                     I will get back to you as soon as possible.
                 </p>
 
-                <form class="px-md-2" method="post">
+                <form class="px-md-2" method="post" action="{{ path("tickets_create") }}">
 
                     <div class="form-outline mb-4">
                         <input type="text" id="ticket_title" name="ticket_title" class="form-control" />
@@ -31,14 +61,19 @@
                     <button type="submit" class="btn btn-sm btn-success btn-lg mb-1">Submit</button>
                 </form>
 
+                <br>
+                <input type="text" id="topic_search" name="topic_search" class="form-control" />
+                <label class="form-label" for="topic_search">Search by ticket subject</label>
+
                 <p class="text-muted text-center mb-0 px-md-2 small">You can find your tickets below.</p>
                 <p class="text-muted text-center mb-0 px-md-2 small">To view more information, click on the ticket.</p>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="list-group" id="myList">
+            <div class="list-group">
                 {% for ticket in tickets %}
+                    <div id="{{ ticket.title }}" class="filterable">
                     <a class="list-group-item list-group-item-action flex-column align-items-start" href="/tickets/view/{{ ticket.id }}">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{{ ticket.title }}</h5>
@@ -47,6 +82,7 @@
                         <p class="mb-1">{{ ticket.description }}</p>
                         <small>{{ ticket.closedString }}</small>
                     </a>
+                    </div>
                     <br>
                 {% endfor %}
             </div>

@@ -21,7 +21,8 @@ class ContactController extends AbstractController
     public function index(): Response
     {
         return $this->render('contact/index.html.twig', [
-            'logged_in' => $this->requestStack->getSession()->get('logged_in')
+            'logged_in' => $this->requestStack->getSession()->get('logged_in'),
+            'admin' => $this->requestStack->getSession()->get('admin')
         ]);
     }
 
@@ -33,8 +34,15 @@ class ContactController extends AbstractController
         $subject = $request->request->get('subject');
         $message = $request->request->get('message');
 
+        if(empty($name) || empty($email) || empty($subject) || empty($message)) {
+            $this->addFlash('error', 'All field should be filled.');
+
+            return $this->redirectToRoute('contact');
+        }
+
         return $this->render('contact/index.html.twig', [
-            'logged_in' => $this->requestStack->getSession()->get('logged_in')
+            'logged_in' => $this->requestStack->getSession()->get('logged_in'),
+            'admin' => $this->requestStack->getSession()->get('admin')
         ]);
     }
 }

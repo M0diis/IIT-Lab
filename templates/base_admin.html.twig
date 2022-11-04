@@ -65,27 +65,17 @@
                                 <a class="nav-link" href="{{ path('reviews') }}">REVIEWS</a>
                             </li>
 
-                            {% if logged_in is defined and logged_in is same as(true) %}
-                                {% if admin is defined and admin is same as(true) %}
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('admin_tickets') }}">TICKETS</a>
-                                </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('admin') }}">ADMIN-PANEL</a>
-                                </li>
-                                {% else %}
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('tickets') }}">TICKETS</a>
-                                </li>
-                                {% endif %}
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('logout') }}">LOGOUT</a>
-                                </li>
-                            {% else %}
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('login') }}">LOGIN</a>
-                                </li>
-                            {% endif %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ path('admin_tickets') }}">TICKETS</a>
+                            </li>
+
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ path('admin') }}">ADMIN-PANEL</a>
+                            </li>
+
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ path('logout') }}">LOGOUT</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

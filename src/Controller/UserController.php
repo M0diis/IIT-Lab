@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use DateTime;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -36,68 +37,50 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/new', name: 'user_new')]
-    public function userNew(Request $request,  ManagerRegistry $doctrine): Response
+    #[Route('/user/create', name: 'user_create', methods: ['POST'])]
+    public function userCreate(Request $request,  ManagerRegistry $doctrine): Response
     {
         if(!$this->requestStack->getSession()->get('logged_in')) {
             return $this->redirectToRoute('login');
         }
 
+        $name = $request->get('user_name');
+        $email = $request->get('user_email');
+        $password = $request->get('user_password');
+        $admin = $request->get('is_admin');
+
+        if(empty($name) || empty($email) || empty($password)) {
+            $this->addFlash('error', 'Please fill in all fields.');
+
+            return $this->redirectToRoute('admin');
+        }
+
         $user = new User();
 
-        $form = $this->createFormBuilder($user)
-            ->add('name', TextType::class, array('attr' => array('class' => 'form-control')))
-            ->add('email', EmailType::class, array('attr' => array('class' => 'form-control')))
-            ->add('password', PasswordType::class, array('attr' => array('class' => 'form-control')))
-            ->add(
-                'admin',
-                ChoiceType::class,
-                array('attr' => array('class' => 'form-control'),
-                    'choices' => array('Yes' => true, 'No' => false)))
-            ->add(
-                'save',
-                SubmitType::class,
-                array('label' => 'Sukurti', 'attr' => array('class' => 'btn btn-sm btn-primary'))
-            )->getForm();
-
-        $form->handleRequest($request);
+        $user
+            ->setName($name)
+            ->setEmail($email)
+            ->setPassword($password)
+            ->setAdmin($admin)
+            ->setCreatedTimestamp(date('Y-m-d H:i:s'));
 
         $userRepository = $doctrine->getRepository(User::class);
 
-        if($form->isSubmitted() && $form->isValid())
+        $existing = $userRepository->findBy(['email' => $email, 'name' => $name]);
+
+        if($existing)
         {
-            $name = $form['name']->getData();
-            $email = $form['email']->getData();
-            $password = $form['password']->getData();
-            $admin = $form['admin']->getData();
-            $created_timestamp = time();
+            $this->addFlash('error', 'User already exists by that name and email.');
 
-            $existing = $userRepository->findBy(['email' => $email, 'name' => $name]);
-
-            if($existing)
-            {
-                $this->addFlash('error', 'Vartotojas su tokiu el. paštu jau egzistuoja.');
-
-                return $this->redirectToRoute('user_new');
-            }
-
-            $user->setName($name);
-            $user->setEmail($email);
-            $user->setPassword($password);
-            $user->setAdmin($admin);
-            $user->setCreatedTimestamp($created_timestamp);
-
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->addFlash('info', 'User has been created successfully');
-
-            return $this->redirectToRoute('user_new');
+            return $this->redirectToRoute('admin');
         }
 
-        return $this->render('user/user_new.html.twig', [
-            'formItem' => $form->createView()
-        ]);
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('info', 'User has been created successfully');
+
+        return $this->redirectToRoute('admin');
     }
 }
